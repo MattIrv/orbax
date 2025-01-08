@@ -147,6 +147,8 @@ def get_device_memory() -> int:
   """Returns HBM capacity of the device on which the code is running(in bytes)."""
   device = jax.devices()[0]
   if device.platform != 'tpu':
+    if device.platform == 'cpu':
+        return int(60e9)
     raise ValueError('Only TPU devices are supported.')
   hbm_memory = {
       'TPU v3': int(16e9),  # two cores pre chip each with 16 GB HBM
