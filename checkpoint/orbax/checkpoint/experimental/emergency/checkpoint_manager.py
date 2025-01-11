@@ -377,7 +377,7 @@ def _all_devices_excepting_slice(
     replica_id: int = 0,
     replica_axis_index: int = 0,
 ) -> np.ndarray:
-  if hasattr(jax.devices()[0], 'slice_index'):
+  if hasattr(jax.devices()[0], 'slice_index') and jax.devices()[0].platform != "cpu":
     get_slice_id = np.vectorize(lambda x: x.slice_index)
     return devices[get_slice_id(devices) != replica_id]
   else:
